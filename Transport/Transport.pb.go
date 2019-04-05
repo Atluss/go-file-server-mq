@@ -29,7 +29,7 @@ func (m *DiscoverableServiceTransport) Reset()         { *m = DiscoverableServic
 func (m *DiscoverableServiceTransport) String() string { return proto.CompactTextString(m) }
 func (*DiscoverableServiceTransport) ProtoMessage()    {}
 func (*DiscoverableServiceTransport) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Transport_1618980d09ad71dd, []int{0}
+	return fileDescriptor_Transport_5e14331e6e918953, []int{0}
 }
 func (m *DiscoverableServiceTransport) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DiscoverableServiceTransport.Unmarshal(m, b)
@@ -56,18 +56,85 @@ func (m *DiscoverableServiceTransport) GetAddress() string {
 	return ""
 }
 
-func init() {
-	proto.RegisterType((*DiscoverableServiceTransport)(nil), "Transport.DiscoverableServiceTransport")
+type Task struct {
+	Uuid                 string   `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Finisheduuid         string   `protobuf:"bytes,2,opt,name=finisheduuid,proto3" json:"finisheduuid,omitempty"`
+	State                int32    `protobuf:"varint,3,opt,name=state,proto3" json:"state,omitempty"`
+	Id                   int32    `protobuf:"varint,4,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func init() { proto.RegisterFile("Transport.proto", fileDescriptor_Transport_1618980d09ad71dd) }
+func (m *Task) Reset()         { *m = Task{} }
+func (m *Task) String() string { return proto.CompactTextString(m) }
+func (*Task) ProtoMessage()    {}
+func (*Task) Descriptor() ([]byte, []int) {
+	return fileDescriptor_Transport_5e14331e6e918953, []int{1}
+}
+func (m *Task) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Task.Unmarshal(m, b)
+}
+func (m *Task) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Task.Marshal(b, m, deterministic)
+}
+func (dst *Task) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Task.Merge(dst, src)
+}
+func (m *Task) XXX_Size() int {
+	return xxx_messageInfo_Task.Size(m)
+}
+func (m *Task) XXX_DiscardUnknown() {
+	xxx_messageInfo_Task.DiscardUnknown(m)
+}
 
-var fileDescriptor_Transport_1618980d09ad71dd = []byte{
-	// 95 bytes of a gzipped FileDescriptorProto
+var xxx_messageInfo_Task proto.InternalMessageInfo
+
+func (m *Task) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
+func (m *Task) GetFinisheduuid() string {
+	if m != nil {
+		return m.Finisheduuid
+	}
+	return ""
+}
+
+func (m *Task) GetState() int32 {
+	if m != nil {
+		return m.State
+	}
+	return 0
+}
+
+func (m *Task) GetId() int32 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func init() {
+	proto.RegisterType((*DiscoverableServiceTransport)(nil), "Transport.DiscoverableServiceTransport")
+	proto.RegisterType((*Task)(nil), "Transport.Task")
+}
+
+func init() { proto.RegisterFile("Transport.proto", fileDescriptor_Transport_5e14331e6e918953) }
+
+var fileDescriptor_Transport_5e14331e6e918953 = []byte{
+	// 160 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0xe2, 0x0f, 0x29, 0x4a, 0xcc,
 	0x2b, 0x2e, 0xc8, 0x2f, 0x2a, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x84, 0x0b, 0x28,
 	0x59, 0x70, 0xc9, 0xb8, 0x64, 0x16, 0x27, 0xe7, 0x97, 0xa5, 0x16, 0x25, 0x26, 0xe5, 0xa4, 0x06,
 	0xa7, 0x16, 0x95, 0x65, 0x26, 0xa7, 0xc2, 0xe5, 0x85, 0x24, 0xb8, 0xd8, 0x1d, 0x53, 0x52, 0x8a,
-	0x52, 0x8b, 0x8b, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0xdc, 0x24, 0x36, 0xb0, 0x59,
-	0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe0, 0x9d, 0x7c, 0xd5, 0x5e, 0x00, 0x00, 0x00,
+	0x52, 0x8b, 0x8b, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c, 0xa5, 0x14, 0x2e, 0x96,
+	0x90, 0xc4, 0xe2, 0x6c, 0x21, 0x21, 0x2e, 0x96, 0xd2, 0xd2, 0xcc, 0x14, 0xa8, 0x34, 0x98, 0x2d,
+	0xa4, 0xc4, 0xc5, 0x93, 0x96, 0x99, 0x97, 0x59, 0x9c, 0x91, 0x9a, 0x02, 0x96, 0x63, 0x02, 0xcb,
+	0xa1, 0x88, 0x09, 0x89, 0x70, 0xb1, 0x16, 0x97, 0x24, 0x96, 0xa4, 0x4a, 0x30, 0x03, 0x25, 0x59,
+	0x83, 0x20, 0x1c, 0x21, 0x3e, 0x2e, 0x26, 0xa0, 0x7a, 0x16, 0xb0, 0x10, 0x90, 0x95, 0xc4, 0x06,
+	0x76, 0xb1, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xe4, 0xaf, 0x28, 0x7f, 0xc4, 0x00, 0x00, 0x00,
 }
