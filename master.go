@@ -22,7 +22,6 @@ var TaskMutex sync.Mutex
 var oldestFinishedTaskPointer int
 
 func main() {
-
 	settingPath := "settings.json"
 	set := config.NewApiSetup(settingPath)
 
@@ -38,8 +37,6 @@ func main() {
 	Tasks = make([]Transport.Task, 0, 20)
 	TaskMutex = sync.Mutex{}
 	oldestFinishedTaskPointer = 0
-
-	initTestTasks(set.Nats)
 
 	wg := sync.WaitGroup{}
 	if _, err := set.Nats.Subscribe("Work.TaskToDo", func(m *nats.Msg) {
@@ -74,15 +71,17 @@ func main() {
 		log.Println(err)
 	}
 
+	initTestTasks(set.Nats)
+
 	wg.Add(1)
 	wg.Wait()
 }
 
 func initTestTasks(nc *nats.Conn) {
-
 	for i := 0; i < 20; i++ {
 
 		newTask := Transport.Task{Uuid: uuid.NewV4().String(), State: 0}
+		log.Printf("Gererate uid: %s", newTask.Uuid)
 		fileServerAddressTransport := Transport.DiscoverableServiceTransport{}
 
 		msg, err := nc.Request("Discovery.FileServer", nil, 1000*time.Millisecond)
@@ -94,6 +93,7 @@ func initTestTasks(nc *nats.Conn) {
 		}
 
 		if err != nil {
+			log.Printf("Something went wrong. (Discovery.FileServer) %s", err)
 			continue
 		}
 
@@ -114,7 +114,6 @@ func initTestTasks(nc *nats.Conn) {
 }
 
 func getNextTask() (*Transport.Task, bool) {
-
 	TaskMutex.Lock()
 	defer TaskMutex.Unlock()
 
@@ -130,11 +129,9 @@ func getNextTask() (*Transport.Task, bool) {
 		}
 	}
 	return nil, false
-
 }
 
 func resetTaskIfNotFinished(i int) {
-
 	time.Sleep(2 * time.Minute)
 	TaskMutex.Lock()
 

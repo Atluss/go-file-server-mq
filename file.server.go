@@ -42,7 +42,7 @@ func main() {
 	set.Route.HandleFunc("/{name}", func(w http.ResponseWriter, r *http.Request) {
 
 		vars := mux.Vars(r)
-		file, err := os.Open("/tmp/" + vars["name"])
+		file, err := os.Open("tmp/" + vars["name"])
 		defer file.Close()
 
 		if err != nil {
@@ -61,7 +61,7 @@ func main() {
 	set.Route.HandleFunc("/{name}", func(w http.ResponseWriter, r *http.Request) {
 
 		vars := mux.Vars(r)
-		file, err := os.Create("/tmp/" + vars["name"])
+		file, err := os.Create("tmp/" + vars["name"])
 		defer file.Close()
 
 		if err != nil {
@@ -72,6 +72,8 @@ func main() {
 			_, err := io.Copy(file, r.Body)
 			if err != nil {
 				w.WriteHeader(500)
+			} else {
+				log.Printf("File: %s uploaded", vars["name"])
 			}
 		}
 
