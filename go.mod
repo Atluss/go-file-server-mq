@@ -1,6 +1,6 @@
 module github.com/Atluss/FileServerWithMQ
 
-go 1.12
+go 1.12.2
 
 require (
 	github.com/golang/protobuf v1.3.1

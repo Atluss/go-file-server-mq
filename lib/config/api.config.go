@@ -45,6 +45,7 @@ type natsCnfAddress struct {
 type config struct {
 	Name     string     `json:"Name"`    // API name
 	Version  string     `json:"Version"` // API version
+	Host     string     `json:"Host"`
 	Port     string     `json:"Port"`
 	FilePath string     `json:"FilePath"` // path to Json settings file
 	Nats     natsConfig `json:"Nats"`
@@ -83,6 +84,10 @@ func (obj *config) validate() error {
 
 	if obj.Version == "" {
 		return fmt.Errorf("config miss version")
+	}
+
+	if obj.Host == "" {
+		return fmt.Errorf("config miss host")
 	}
 
 	if obj.Port == "" {

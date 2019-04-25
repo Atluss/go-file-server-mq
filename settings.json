@@ -1,18 +1,19 @@
 {
   "name": "api",
   "version": "1.0.0",
+  "host" : "localhost",
   "port": "10000",
   "nats": {
     "version" : "1.4.2",
     "reconnectedWait" : 5,
     "address" : [
       {
-        "host" : "localhost",
-        "port" : "54222"
+        "host" : "nats",
+        "port" : "4222"
       },
       {
         "host" : "localhost",
-        "port" : "54222"
+        "port" : "4222"
       }
     ]
   }

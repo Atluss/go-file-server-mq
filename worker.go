@@ -117,6 +117,8 @@ func doWork(nc *nats.Conn) {
 			continue
 		}
 
+		log.Println("all okey")
+
 		// We notify the Master about finishing the Task
 		nc.Publish("Work.TaskFinished", data)
 	}

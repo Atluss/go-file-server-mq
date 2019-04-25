@@ -77,6 +77,8 @@ func main() {
 			}
 		}
 
+		log.Println("add file")
+
 	}).Methods("POST")
 
 	RunServiceDiscoverable(set.Nats, set.Config.Port)
@@ -89,7 +91,7 @@ func main() {
 func RunServiceDiscoverable(nc *nats.Conn, port string) {
 	if _, err := nc.Subscribe("Discovery.FileServer", func(m *nats.Msg) {
 
-		serviceAddressTransport := Transport.DiscoverableServiceTransport{Address: fmt.Sprintf("http://localhost:%s", port)}
+		serviceAddressTransport := Transport.DiscoverableServiceTransport{Address: fmt.Sprintf("http://app_fs:%s", port)}
 		data, err := proto.Marshal(&serviceAddressTransport)
 		if err == nil {
 			nc.Publish(m.Reply, data)

@@ -105,6 +105,7 @@ func initTestTasks(nc *nats.Conn) {
 
 		r, err := http.Post(fileServerAddress+"/"+newTask.Uuid, "", buf)
 		if err != nil || r.StatusCode != http.StatusOK {
+			log.Printf("error send file: %s", err)
 			continue
 		}
 

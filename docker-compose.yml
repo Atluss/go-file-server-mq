@@ -1,0 +1,56 @@
+version: "2"
+
+services:
+
+  nats:
+    container_name: cn_nats_file_server_mq
+    image: nats:1.4.1
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+    hostname: nats-server
+
+  app_fs:
+    container_name: cn_go_fs_mq
+    image: golang:1.12.2
+    volumes:
+      - .:/go/src/FileServerWithMQ
+    working_dir: /go/src/FileServerWithMQ
+    command: go run file.server.go
+    environment:
+      - GO111MODULE=on
+    depends_on:
+      - nats
+    expose:
+      - "10000"
+    links:
+      - nats
+
+  app_worker:
+    container_name: cn_go_fs_mq_worker
+    image: golang:1.12.2
+    volumes:
+      - .:/go/src/FileServerWithMQ
+    working_dir: /go/src/FileServerWithMQ
+    command: go run worker.go
+    environment:
+      - GO111MODULE=on
+    depends_on:
+      - nats
+    links:
+      - nats
+
+  app_master:
+    container_name: cn_go_fs_mq_master
+    image: golang:1.12.2
+    volumes:
+      - .:/go/src/FileServerWithMQ
+    working_dir: /go/src/FileServerWithMQ
+    command: go run master.go
+    environment:
+      - GO111MODULE=on
+    depends_on:
+      - nats
+    links:
+      - nats
