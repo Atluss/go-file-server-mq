@@ -3,18 +3,18 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Atluss/FileServerWithMQ/lib"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1"
 	"io/ioutil"
 	"os"
 	"strings"
 )
 
-// config load new config for API
+// Config load new config for API
 func Config(path string) (*config, error) {
 
 	conf := config{}
 
-	if err := lib.CheckFileExist(path); err != nil {
+	if err := v1.CheckFileExist(path); err != nil {
 		return &conf, err
 	}
 
@@ -58,17 +58,17 @@ func (obj *config) load() error {
 
 	defer func() {
 		// defer and handle close error
-		lib.LogOnError(jsonSet.Close(), "warning: Can't close json settings file.")
+		v1.LogOnError(jsonSet.Close(), "warning: Can't close json settings file.")
 	}()
 
-	if !lib.LogOnError(err, "Can't open config file") {
+	if !v1.LogOnError(err, "Can't open config file") {
 		return err
 	}
 
 	bytesVal, _ := ioutil.ReadAll(jsonSet)
 	err = json.Unmarshal(bytesVal, &obj)
 
-	if !lib.LogOnError(err, "Can't unmarshal json file") {
+	if !v1.LogOnError(err, "Can't unmarshal json file") {
 		return err
 	}
 

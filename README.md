@@ -1,5 +1,6 @@
-## File Server with MQ
+[![Go Report Card](https://goreportcard.com/badge/github.com/Atluss/FileServerWithMQ)](https://goreportcard.com/report/github.com/Atluss/FileServerWithMQ)
 
+## File Server with MQ
 
 ### How to install docker
 

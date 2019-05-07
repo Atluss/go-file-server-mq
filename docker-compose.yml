@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/go/src/FileServerWithMQ
     working_dir: /go/src/FileServerWithMQ
-    command: go run file.server.go
+    command: go run cmd/fileServer/file.server.go
     environment:
       - GO111MODULE=on
     depends_on:
@@ -33,7 +33,7 @@ services:
     volumes:
       - .:/go/src/FileServerWithMQ
     working_dir: /go/src/FileServerWithMQ
-    command: go run worker.go
+    command: go run cmd/fileWorker/file.worker.go
     environment:
       - GO111MODULE=on
     depends_on:
@@ -47,7 +47,7 @@ services:
     volumes:
       - .:/go/src/FileServerWithMQ
     working_dir: /go/src/FileServerWithMQ
-    command: go run master.go
+    command: go run cmd/master/master.go
     environment:
       - GO111MODULE=on
     depends_on:

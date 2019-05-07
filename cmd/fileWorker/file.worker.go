@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/Atluss/FileServerWithMQ/Transport"
-	"github.com/Atluss/FileServerWithMQ/lib/config"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1/Transport"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1/config"
 	"github.com/golang/protobuf/proto"
 	"github.com/nats-io/go-nats"
 	uuid "github.com/satori/go.uuid"
@@ -21,7 +21,8 @@ import (
 )
 
 func main() {
-	settingPath := "settings.json"
+	settingPath := "cmd/settings.json"
+
 	set := config.NewApiSetup(settingPath)
 
 	// do something if user close program (close DB, or wait running query)

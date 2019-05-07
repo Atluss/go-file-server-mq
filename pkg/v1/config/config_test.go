@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/Atluss/FileServerWithMQ/lib"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1"
 	"log"
 	"testing"
 )
@@ -11,7 +11,7 @@ func TestConfig(t *testing.T) {
 	path := "settings.json"
 
 	cnf, err := Config(path)
-	lib.FailOnError(err, "Test error")
+	v1.FailOnError(err, "Test error")
 
 	log.Printf("%+v", cnf)
 	log.Printf("Name: %s", cnf.Name)

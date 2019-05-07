@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/Atluss/FileServerWithMQ/Transport"
-	"github.com/Atluss/FileServerWithMQ/lib/config"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1/Transport"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1/config"
 	"github.com/golang/protobuf/proto"
 	"github.com/nats-io/go-nats"
 	uuid "github.com/satori/go.uuid"
@@ -17,12 +17,12 @@ import (
 	"time"
 )
 
-var Tasks []Transport.Task
-var TaskMutex sync.Mutex
+var tasks []Transport.Task
+var taskMutex sync.Mutex
 var oldestFinishedTaskPointer int
 
 func main() {
-	settingPath := "settings.json"
+	settingPath := "cmd/settings.json"
 	set := config.NewApiSetup(settingPath)
 
 	// do something if user close program (close DB, or wait running query)
@@ -34,8 +34,8 @@ func main() {
 		os.Exit(1)
 	}()
 
-	Tasks = make([]Transport.Task, 0, 20)
-	TaskMutex = sync.Mutex{}
+	tasks = make([]Transport.Task, 0, 20)
+	taskMutex = sync.Mutex{}
 	oldestFinishedTaskPointer = 0
 
 	wg := sync.WaitGroup{}
@@ -60,10 +60,10 @@ func main() {
 		err := proto.Unmarshal(m.Data, &myTask)
 
 		if err == nil {
-			TaskMutex.Lock()
-			Tasks[myTask.Id].State = 2
-			Tasks[myTask.Id].Finisheduuid = myTask.Finisheduuid
-			TaskMutex.Unlock()
+			taskMutex.Lock()
+			tasks[myTask.Id].State = 2
+			tasks[myTask.Id].Finisheduuid = myTask.Finisheduuid
+			taskMutex.Unlock()
 
 		}
 
@@ -109,23 +109,23 @@ func initTestTasks(nc *nats.Conn) {
 			continue
 		}
 
-		newTask.Id = int32(len(Tasks))
-		Tasks = append(Tasks, newTask)
+		newTask.Id = int32(len(tasks))
+		tasks = append(tasks, newTask)
 	}
 }
 
 func getNextTask() (*Transport.Task, bool) {
-	TaskMutex.Lock()
-	defer TaskMutex.Unlock()
+	taskMutex.Lock()
+	defer taskMutex.Unlock()
 
-	for i := oldestFinishedTaskPointer; i < len(Tasks); i++ {
-		if i == oldestFinishedTaskPointer && Tasks[i].State == 2 {
+	for i := oldestFinishedTaskPointer; i < len(tasks); i++ {
+		if i == oldestFinishedTaskPointer && tasks[i].State == 2 {
 			oldestFinishedTaskPointer++
 		} else {
-			if Tasks[i].State == 0 {
-				Tasks[i].State = 1
+			if tasks[i].State == 0 {
+				tasks[i].State = 1
 				go resetTaskIfNotFinished(i)
-				return &Tasks[i], true
+				return &tasks[i], true
 			}
 		}
 	}
@@ -134,9 +134,9 @@ func getNextTask() (*Transport.Task, bool) {
 
 func resetTaskIfNotFinished(i int) {
 	time.Sleep(2 * time.Minute)
-	TaskMutex.Lock()
+	taskMutex.Lock()
 
-	if Tasks[i].State != 2 {
-		Tasks[i].State = 0
+	if tasks[i].State != 2 {
+		tasks[i].State = 0
 	}
 }

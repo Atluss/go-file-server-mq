@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/Atluss/FileServerWithMQ/Transport"
-	"github.com/Atluss/FileServerWithMQ/lib/config"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1/Transport"
+	"github.com/Atluss/FileServerWithMQ/pkg/v1/config"
 	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/mux"
 	"github.com/nats-io/go-nats"
@@ -17,7 +17,7 @@ import (
 
 func main() {
 
-	settingPath := "settings.json"
+	settingPath := "cmd/settings.json"
 
 	set := config.NewApiSetup(settingPath)
 
@@ -81,14 +81,14 @@ func main() {
 
 	}).Methods("POST")
 
-	RunServiceDiscoverable(set.Nats, set.Config.Port)
+	runServiceDiscoverable(set.Nats, set.Config.Port)
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", set.Config.Port), set.Route); err != nil {
 		log.Println(err)
 	}
 }
 
-func RunServiceDiscoverable(nc *nats.Conn, port string) {
+func runServiceDiscoverable(nc *nats.Conn, port string) {
 	if _, err := nc.Subscribe("Discovery.FileServer", func(m *nats.Msg) {
 
 		serviceAddressTransport := Transport.DiscoverableServiceTransport{Address: fmt.Sprintf("http://app_fs:%s", port)}
